@@ -8,6 +8,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setMovies, appendMovies, setLoading, setQuery, setPage, setDebouncedQuery, setSelectedMovie, setModalOpen, incrementPage } from './redux/movieSlice';
 import Logo from './assets/icon/LogoLawen.jpeg';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import Rating from '@mui/material/Rating';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import YouTubeIcon from '@mui/icons-material/YouTube';
 function App() {
   const [noSoal, setNoSoal] = useState(2);
   const [detail, setDetails] = useState([]);
@@ -170,7 +175,7 @@ function App() {
 
     fetchData();
 // eslint-disable-next-line react-hooks/exhaustive-deps
-}, []);
+}, [noSoal]);
   // console.log("dataHeader",dataHeader);
   const handleClickOpen = (movie) => {
     dispatch(setSelectedMovie(movie));
@@ -210,15 +215,8 @@ function App() {
     if (!detail || Object.keys(detail).length === 0) {
       return null;
     } else {
-      // const opts = {
-      //   height: '390',
-      //   width: '640',
-      //   playerVars: {
-      //     autoplay: 0,
-      //   },
-      // };
       return (
-        <div className="px-4 py-20">
+        <div className="px-4 py-20 bg-[#E1E1E2]">
           <Button 
             onClick={handleBack} 
             variant="contained" 
@@ -229,10 +227,10 @@ function App() {
           </Button>
           <Card style={{ borderRadius: '12px', position: 'relative' }}>
             <CardContent>
-              <h1>{detail.Title}</h1>
+              <h1 className="text-3xl font-mono bold pb-4">{detail?.Title}</h1>
               <div className="flex">
                 <div className="relative">
-                  <img className="w-32 h-48" src={detail.Poster} alt={detail.Title} />
+                  <img className="w-[280px] h-48" src={detail.Poster} alt={detail.Title} />
                   <div className="absolute inset-0 flex items-center justify-center">
                   <PlayArrowIcon 
                     style={{ 
@@ -244,8 +242,9 @@ function App() {
                     }} 
                   />
                   </div>
+                  <Rating className='pt-2' name="read-only" value={detail?.imdbRating} readOnly />
                 </div>
-                <div className="ml-4">
+                <div className="ml-6">
                   <h2>{detail.Genre}</h2>
                   <p><strong>Plot:</strong> {detail.Plot}</p>
                   <p><strong>Director:</strong> {detail.Director}</p>
@@ -271,9 +270,9 @@ function App() {
       />
       
       <div className="hidden md:flex space-x-8">
-        <a href="#home" onClick={() => handleSoal(1)} className="hover:underline">Soal 1</a>
+        <a onClick={() => handleSoal(1)} className="hover:underline">Soal 1</a>
         <a onClick={() => handleSoal(2)} className="hover:underline">Soal 2</a>
-        <a href="#films" className="hover:underline">Films</a>
+        <a className="hover:underline">Films</a>
         <a href="#new" className="hover:underline">New & Popular</a>
         {/* <a href="#mylist" className="hover:underline">My List</a> */}
       </div>
@@ -283,7 +282,7 @@ function App() {
   const ListView = () => {
     if (movies && movies.length > 0 ) {
       return (
-        <div className="bg-[#505050] grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6 2xl:grid-cols-5 gap-5 px-4 py-4">
+        <div className="bg-[#E1E1E2] grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6 2xl:grid-cols-5 gap-5 px-4 py-4">
           {movies.map((movie, index) => (
             <Card
               ref={movies.length === index + 1 ? lastMovieElementRef : null}
@@ -315,6 +314,13 @@ function App() {
       )
     } else {return null}
   };
+  // const sosialMedia = (sosmed) => {
+  //   console.log("VALSOSIAL:",sosmed)
+
+  //   if (sosmed == 'linkedin') {
+      
+  //   }
+  // }
 
   const Footer = () => {
     return (
@@ -337,8 +343,8 @@ function App() {
                   alt="PT.Lawencon"
                   sx={{ height: 100, borderRadius: '12px', backgroundColor: '#000' }}
                 />
-                <Typography variant="h6">PT.Lawencon</Typography>
               </Box>
+              <Typography style={{paddingTop: '10px', fontWeight: '700'}} variant="h6">PT.LAWENCON</Typography>
             </Grid>
             <Grid item xs={12} sm={3}>
               <Typography variant="h6" gutterBottom>
@@ -359,10 +365,10 @@ function App() {
               <Typography variant="h6" gutterBottom>
                 Sosial Media
               </Typography>
-              <Typography>LinkedIn</Typography>
-              <Typography>Instagram</Typography>
-              <Typography>Facebook</Typography>
-              <Typography>Youtube</Typography>
+              <Typography><button onClick={() => window.open('https://id.linkedin.com/in/pt-lawencon-internasional-0918aa102', '_blank')}><LinkedInIcon/> LinkedIn</button></Typography>
+              <Typography><button onClick={() => window.open('https://www.instagram.com/lawencon', '_blank')}><InstagramIcon/> Instagram</button></Typography>
+              <Typography><button onClick={() => window.open('https://id.linkedin.com/in/pt-lawencon-internasional-0918aa102', '_blank')}><FacebookIcon/> Facebook</button></Typography>
+              <Typography><button onClick={() => window.open('https://id.linkedin.com/in/pt-lawencon-internasional-0918aa102', '_blank')}><YouTubeIcon/>Youtube</button></Typography>
             </Grid>
           </Grid>
         </Container>
@@ -399,7 +405,7 @@ function App() {
               className="w-full h-full object-cover"
             />
           </div>
-          <div className=" inset-0 flex justify-end px-5 py-10">
+          <div className=" flex justify-end px-5 py-10 ">
             <TextField
               id="filled-search"
               label="Masukan Judul Film"
